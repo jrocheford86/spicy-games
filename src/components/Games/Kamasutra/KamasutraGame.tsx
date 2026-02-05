@@ -19,13 +19,15 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
   } | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const timerRef = useRef<number>();
+  const timerRef = useRef<number | undefined>(undefined);
   const wakeLock = useRef<any>(null);
 
   // Limpiar recursos al salir
   useEffect(() => {
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
       if (wakeLock.current) wakeLock.current.release();
     };
   }, []);
@@ -86,7 +88,7 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
             <div className={`${styles.strip} ${isSpinning ? styles.blur : ""}`}>
               {[...data.positions, ...data.positions].map((pos, i) => (
                 <div key={i} className={styles.stripItem}>
-                  <img src={pos.image} alt="" />
+                  <img src={`${import.meta.env.BASE_URL}${pos.image}`} alt="" />
                   <span>{pos.name[lang]}</span>
                 </div>
               ))}
@@ -106,7 +108,10 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
       {view === "result" && selection && (
         <div className={styles.resultCard}>
           <div className={styles.imgBox}>
-            <img src={selection.p.image} alt="" />
+            <img
+              src={`${import.meta.env.BASE_URL}${selection.p.image}`}
+              alt=""
+            />
             <button
               className={styles.infoBtn}
               onClick={() =>
