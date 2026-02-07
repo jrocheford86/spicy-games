@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
+
 import type { Language } from "../types";
 
 interface LanguageContextType {
@@ -12,17 +13,18 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [lang, setLang] = useState<Language>(
-    (localStorage.getItem("lang") as Language) || "en",
+  // Leemos de localStorage al iniciar. Si no hay nada, por defecto 'en'
+  const [lang, setLangState] = useState<Language>(
+    (localStorage.getItem("spicy_lang") as Language) || "en",
   );
 
-  const handleSetLang = (l: Language) => {
-    setLang(l);
-    localStorage.setItem("lang", l);
+  const setLang = (l: Language) => {
+    setLangState(l);
+    localStorage.setItem("spicy_lang", l); // Guardamos la elección
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang: handleSetLang }}>
+    <LanguageContext.Provider value={{ lang, setLang }}>
       {children}
     </LanguageContext.Provider>
   );

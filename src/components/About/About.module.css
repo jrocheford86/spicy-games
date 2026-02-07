@@ -1,107 +1,107 @@
 .aboutContainer {
   padding: 10px 5px;
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
-  animation: fadeIn 0.6s ease-out;
+  background: #080808;
 }
-
 .heartIcon {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 0 15px rgba(255, 46, 99, 0.4));
+  font-size: 3rem;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 10px rgba(255, 46, 99, 0.5));
 }
 
 .storySection h2 {
-  color: #ff2e63;
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-  font-weight: 800;
+  color: var(--primary);
+  font-size: 1.4rem;
+  margin-bottom: 12px;
 }
-
 .storySection p {
-  color: #e0e0e0;
-  line-height: 1.8;
-  font-size: 1.1rem;
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1rem;
   text-align: justify;
-  margin-bottom: 30px;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 
 .divider {
   border: 0;
-  border-top: 1px solid #333;
-  margin: 40px 20px;
+  border-top: 1px solid #222;
+  margin: 30px 20px;
 }
 
 .label {
-  color: #888;
+  color: #666;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 0.85rem;
-  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
 }
-
 .name {
-  font-size: 2rem;
-  margin: 10px 0 40px 0;
-  background: linear-gradient(135deg, #ffffff 0%, #ff2e63 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 1.8rem;
+  margin: 10px 0 20px 0;
+  color: #fff;
   font-weight: 900;
 }
 
-.socialLinks p {
-  color: #777;
-  font-size: 0.95rem;
-  margin-bottom: 20px;
+/* Iconos Sociales Pequeños y en línea */
+.socialBox p {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
 }
-
 .iconGrid {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .socialIcon {
   color: #fff;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: #1c1c1e;
+  padding: 10px;
+  border-radius: 50%;
+  border: 1px solid #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
-  background: #1a1a1c;
-  border-radius: 50%;
-  border: 1px solid #333;
+  transition: all 0.2s ease;
 }
 
 .socialIcon svg {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
 }
-
 .socialIcon:hover {
-  color: #ff2e63;
-  border-color: #ff2e63;
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(255, 46, 99, 0.25);
-  background: rgba(255, 46, 99, 0.05);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-3px);
 }
 
-.version {
-  margin-top: 60px;
+/* Botones de Idioma */
+.settingsLabel {
+  color: #666;
+  text-transform: uppercase;
   font-size: 0.8rem;
-  color: #333;
+  margin-bottom: 15px;
   letter-spacing: 1px;
 }
+.langButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 0 20px;
+}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.langBtn {
+  flex: 1;
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid #333;
+  background: #1c1c1e;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.langBtn.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(255, 46, 99, 0.1);
 }

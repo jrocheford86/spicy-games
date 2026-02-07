@@ -1,3 +1,5 @@
+// src/types/index.ts
+
 export type Language = "en" | "es";
 
 export interface Localized {

@@ -3,17 +3,16 @@ import styles from "./BottomNav.module.css";
 
 interface BottomNavProps {
   currentView: string;
-  setView: (view: "home" | "about" | "game") => void;
-  onOpenLang: () => void;
+  setView: (view: "home" | "tools" | "about") => void;
 }
 
-const BottomNav = ({ currentView, setView, onOpenLang }: BottomNavProps) => {
+const BottomNav = ({ currentView, setView }: BottomNavProps) => {
   const { lang } = useLang();
 
   const labels = {
-    en: { games: "Games", lang: "Lang", about: "About" },
-    es: { games: "Juegos", lang: "Idioma", about: "Acerca" },
-  }[lang];
+    en: { games: "Games", tools: "Tools", about: "About" },
+    es: { games: "Juegos", tools: "Herramientas", about: "Acerca" },
+  }[lang as "en" | "es"];
 
   return (
     <nav className={styles.nav}>
@@ -25,9 +24,12 @@ const BottomNav = ({ currentView, setView, onOpenLang }: BottomNavProps) => {
         <span className={styles.label}>{labels.games}</span>
       </button>
 
-      <button onClick={onOpenLang} className={styles.item}>
-        <span className={styles.icon}>🌐</span>
-        <span className={styles.label}>{labels.lang}</span>
+      <button
+        onClick={() => setView("tools")}
+        className={`${styles.item} ${currentView === "tools" ? styles.active : ""}`}
+      >
+        <span className={styles.icon}>🛠️</span>
+        <span className={styles.label}>{labels.tools}</span>
       </button>
 
       <button

@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLang } from "../../../context/LanguageContext";
-import type { Position, TimeOption } from "../../../types";
-import data from "../../../data/kamasutraData.json";
+
+// Fíjate en el "type" añadido aquí:
+import type { Position, TimeOption, GameData } from "../../../types";
+
+import dataRaw from "../../../data/kamasutraData.json";
 import styles from "./Kamasutra.module.css";
+
+const data = dataRaw as GameData;
 
 interface Props {
   onExit: () => void;
@@ -20,45 +25,50 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const timerRef = useRef<number | undefined>(undefined);
-  const wakeLock = useRef<any>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
-  // Limpiar recursos al salir
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (wakeLock.current) wakeLock.current.release();
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
   const handleSpin = () => {
+    if (isSpinning) return;
     setIsSpinning(true);
-    // Seleccionar aleatorios
-    const p = data.positions[Math.floor(Math.random() * data.positions.length)];
-    const t = data.times[Math.floor(Math.random() * data.times.length)];
 
-    // Simular el giro (el CSS se encarga de la animación via clase .blur)
-    setTimeout(() => {
-      setSelection({ p: p as Position, t: t as TimeOption });
-      setIsSpinning(false);
-      setView("result");
-    }, 1800);
-  };
+    const winnerIdx = Math.floor(Math.random() * data.positions.length);
+    const winTime = data.times[Math.floor(Math.random() * data.times.length)];
+    const itemHeight = 250;
+    const totalItems = data.positions.length;
 
-  const startTimer = async () => {
-    if (!selection) return;
-    if (navigator.vibrate) navigator.vibrate(50);
-
-    // Intentar Wake Lock (Mantener pantalla encendida)
-    if ("wakeLock" in navigator) {
-      try {
-        wakeLock.current = await (navigator as any).wakeLock.request("screen");
-      } catch {}
+    // Animación manual del strip para asegurar que funcione
+    if (stripRef.current) {
+      stripRef.current.style.transition = "none";
+      stripRef.current.style.transform = "translateY(0)";
     }
 
+    setTimeout(() => {
+      if (stripRef.current) {
+        const finalLanding = (totalItems + winnerIdx) * itemHeight;
+        stripRef.current.style.transition =
+          "transform 1.5s cubic-bezier(0.15, 0.85, 0.35, 1.05)";
+        stripRef.current.style.transform = `translateY(-${finalLanding}px)`;
+      }
+    }, 50);
+
+    setTimeout(() => {
+      setSelection({ p: data.positions[winnerIdx], t: winTime });
+      setIsSpinning(false);
+      setView("result");
+    }, 2000);
+  };
+
+  const startTimer = (t: TimeOption) => {
+    if (navigator.vibrate) navigator.vibrate(50);
     setView("timer");
-    const end = Date.now() + selection.t.seconds * 1000;
+    setTimeLeft(t.seconds);
+    const end = Date.now() + t.seconds * 1000;
 
     timerRef.current = window.setInterval(() => {
       const remaining = Math.ceil((end - Date.now()) / 1000);
@@ -79,19 +89,27 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
         <button onClick={onExit} className={styles.closeBtn}>
           ✕
         </button>
-        <span>{lang === "es" ? "Ruleta Kamasutra" : "Kamasutra Roulette"}</span>
+        <span>{lang === "es" ? "Ruleta" : "Roulette"}</span>
       </header>
 
       {view === "spin" && (
         <div className={styles.rouletteWrapper}>
           <div className={styles.viewport}>
-            <div className={`${styles.strip} ${isSpinning ? styles.blur : ""}`}>
-              {[...data.positions, ...data.positions].map((pos, i) => (
-                <div key={i} className={styles.stripItem}>
-                  <img src={`${import.meta.env.BASE_URL}${pos.image}`} alt="" />
-                  <span>{pos.name[lang]}</span>
-                </div>
-              ))}
+            <div
+              ref={stripRef}
+              className={`${styles.strip} ${isSpinning ? styles.blur : ""}`}
+            >
+              {[...data.positions, ...data.positions, ...data.positions].map(
+                (pos, i) => (
+                  <div key={i} className={styles.stripItem}>
+                    <img
+                      src={`${import.meta.env.BASE_URL}${pos.image}`}
+                      alt=""
+                    />
+                    <span>{pos.name[lang]}</span>
+                  </div>
+                ),
+              )}
             </div>
             <div className={styles.marker}></div>
           </div>
@@ -124,10 +142,13 @@ export const KamasutraGame: React.FC<Props> = ({ onExit, onShowAlert }) => {
           <h2>{selection.p.name[lang]}</h2>
           <div className={styles.tag}>{selection.p.difficulty[lang]}</div>
           <p>
-            {lang === "es" ? "Tiempo" : "Time"}:{" "}
+            {lang === "es" ? "Objetivo" : "Target"}:{" "}
             <strong>{selection.t.label[lang]}</strong>
           </p>
-          <button className={styles.mainBtn} onClick={startTimer}>
+          <button
+            className={styles.mainBtn}
+            onClick={() => startTimer(selection.t)}
+          >
             START
           </button>
           <button className={styles.secBtn} onClick={() => setView("spin")}>

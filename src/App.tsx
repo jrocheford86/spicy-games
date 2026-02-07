@@ -2,104 +2,60 @@ import { useState } from "react";
 import { LanguageProvider, useLang } from "./context/LanguageContext";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
+import ToolsHome from "./components/Tools/ToolsHome";
+import Calendar from "./components/Calendar/Calendar";
 import { KamasutraGame } from "./components/Games/Kamasutra/KamasutraGame";
 import BottomNav from "./components/Layout/BottomNav";
 import { Modal } from "./components/UI/Modal";
 import type { Language } from "./types";
 
-// Estilos locales rápidos para el selector de idiomas
-const langBtnStyle = (isActive: boolean) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: "15px",
-  width: "100%",
-  padding: "18px",
-  background: isActive ? "rgba(255, 46, 99, 0.1)" : "#2c2c2e",
-  border: `1px solid ${isActive ? "#ff2e63" : "#3a3a3c"}`,
-  borderRadius: "16px",
-  color: isActive ? "#ff2e63" : "white",
-  fontSize: "1.1rem",
-  fontWeight: "600",
-  textAlign: "left" as const,
-});
+type View = "home" | "tools" | "about" | "game" | "tool-calendar";
 
 function AppContent() {
-  const [view, setView] = useState<"home" | "about" | "game">("home");
-  const { lang, setLang } = useLang();
-
-  // Estado para el modal
-  const [modal, setModal] = useState({
-    isOpen: false,
-    title: "",
-    body: "",
-    isLangPicker: false,
-  });
-
-  const openLangPicker = () => {
-    setModal({
-      isOpen: true,
-      title: lang === "es" ? "Seleccionar Idioma" : "Select Language",
-      body: "",
-      isLangPicker: true,
-    });
-  };
-
-  const openAlert = (title: string, body: string) => {
-    setModal({
-      isOpen: true,
-      title: title,
-      body: body,
-      isLangPicker: false,
-    });
-  };
-
-  const handleLangChange = (newLang: Language) => {
-    setLang(newLang);
-    setModal({ ...modal, isOpen: false });
-  };
+  const [view, setView] = useState<View>("home");
+  const [modal, setModal] = useState({ open: false, title: "", body: "" });
+  const { lang } = useLang();
 
   return (
     <main className="app-container">
-      {/* Vistas */}
+      {/* 1. JUEGOS */}
       {view === "home" && <Home onSelectGame={() => setView("game")} />}
-      {view === "about" && <About />}
       {view === "game" && (
-        <KamasutraGame onExit={() => setView("home")} onShowAlert={openAlert} />
+        <div className="view">
+          <KamasutraGame
+            onExit={() => setView("home")}
+            onShowAlert={(t, b) => setModal({ open: true, title: t, body: b })}
+          />
+        </div>
       )}
 
-      {/* Navegación inferior (solo visible en Home y About) */}
-      {view !== "game" && (
-        <BottomNav
-          currentView={view}
-          setView={setView}
-          onOpenLang={openLangPicker}
-        />
+      {/* 2. HERRAMIENTAS */}
+      {view === "tools" && (
+        <ToolsHome onSelectTool={() => setView("tool-calendar")} />
+      )}
+      {view === "tool-calendar" && (
+        <div className="view">
+          <button onClick={() => setView("tools")} className="back-btn">
+            ←
+          </button>
+          <Calendar />
+        </div>
       )}
 
-      {/* Modal Único para Alertas e Idiomas */}
+      {/* 3. ACERCA DE */}
+      {view === "about" && <About />}
+
+      {/* NAVEGACIÓN INFERIOR (Oculta en juegos y herramientas abiertas) */}
+      {!["game", "tool-calendar"].includes(view) && (
+        <BottomNav currentView={view} setView={setView} />
+      )}
+
       <Modal
-        isOpen={modal.isOpen}
+        isOpen={modal.open}
         title={modal.title}
         body={modal.body}
-        onClose={() => setModal({ ...modal, isOpen: false })}
-      >
-        {modal.isLangPicker && (
-          <div style={{ display: "grid", gap: "10px", width: "100%" }}>
-            <button
-              onClick={() => handleLangChange("en")}
-              style={langBtnStyle(lang === "en")}
-            >
-              <span>🇺🇸</span> English
-            </button>
-            <button
-              onClick={() => handleLangChange("es")}
-              style={langBtnStyle(lang === "es")}
-            >
-              <span>🇪🇸</span> Español
-            </button>
-          </div>
-        )}
-      </Modal>
+        onClose={() => setModal({ ...modal, open: false })}
+      />
     </main>
   );
 }
