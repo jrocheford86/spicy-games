@@ -1,5 +1,6 @@
+import { useRegisterSW } from "virtual:pwa-register/react";
 import { useState } from "react";
-import { LanguageProvider, useLang } from "./context/LanguageContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
 import ToolsHome from "./components/Tools/ToolsHome";
@@ -7,15 +8,32 @@ import Calendar from "./components/Calendar/Calendar";
 import { KamasutraGame } from "./components/Games/Kamasutra/KamasutraGame";
 import BottomNav from "./components/Layout/BottomNav";
 import { Modal } from "./components/UI/Modal";
-import type { Language } from "./types";
 
 type View = "home" | "tools" | "about" | "game" | "tool-calendar";
 
 function AppContent() {
   const [view, setView] = useState<View>("home");
   const [modal, setModal] = useState({ open: false, title: "", body: "" });
-  const { lang } = useLang();
 
+  // Lógica de actualización automática
+  useRegisterSW({
+    onRegistered(r: ServiceWorkerRegistration | undefined) {
+      // Revisa si hay actualizaciones cada hora (opcional)
+      if (r) {
+        setInterval(
+          () => {
+            r.update();
+          },
+          60 * 60 * 1000,
+        );
+      }
+    },
+    onNeedRefresh() {
+      // Si detecta un cambio crítico, recarga la página automáticamente
+      // Esto hará que el usuario vea un "flash" blanco rápido y tenga la versión nueva
+      window.location.reload();
+    },
+  });
   return (
     <main className="app-container">
       {/* 1. JUEGOS */}

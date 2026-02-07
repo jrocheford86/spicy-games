@@ -10,12 +10,12 @@ const ToolsHome = ({ onSelectTool }: Props) => {
 
   const t = {
     en: {
-      title: "Your<span>Tools</span>",
+      title: "<span>Tools</span>",
       subtitle: "Tracking & More",
       calendar: "Passion Tracker",
     },
     es: {
-      title: "Tus<span>Herramientas</span>",
+      title: "<span>Herramientas</span>",
       subtitle: "Registro y más",
       calendar: "Registro de Pasión",
     },
