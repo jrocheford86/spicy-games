@@ -139,10 +139,9 @@
   "times": [
     { "label": { "en": "1 Minute", "es": "1 Minuto" }, "seconds": 60 },
     { "label": { "en": "2 Minutes", "es": "2 Minutos" }, "seconds": 120 },
+    { "label": { "en": "3 Minutes", "es": "3 Minutos" }, "seconds": 180 },
+    { "label": { "en": "4 Minutes", "es": "4 Minutos" }, "seconds": 240 },
     { "label": { "en": "5 Minutes", "es": "5 Minutos" }, "seconds": 300 },
-    { "label": { "en": "7 Minutes", "es": "7 Minutos" }, "seconds": 420 },
-    { "label": { "en": "10 Minutes", "es": "10 Minutos" }, "seconds": 600 },
-    { "label": { "en": "15 Minutes", "es": "15 Minutos" }, "seconds": 900 },
     {
       "label": { "en": "Until Orgasm", "es": "Hasta el Orgasmo" },
       "seconds": 1800
