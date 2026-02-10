@@ -8,16 +8,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // 1. Esto hace que el Service Worker se actualice solo
       registerType: "autoUpdate",
-
-      // 2. Opciones de Workbox para forzar la actualización rápida
       workbox: {
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
       },
-
       includeAssets: [
         "favicon.png",
         "apple-touch-icon.png",
@@ -29,19 +25,21 @@ export default defineConfig({
         short_name: "SpicyGames",
         theme_color: "#ff2e63",
         background_color: "#080808",
-        display: "standalone",
-        start_url: "/spicy-games/",
+        display: "standalone", // ESTO OCULTA LA BARRA
+        start_url: "/spicy-games/index.html",
         scope: "/spicy-games/",
         orientation: "portrait",
         icons: [
           {
-            src: "icons/icon-192x192.png",
+            // CORREGIDO: Nombre exacto de tu archivo
+            src: "icons/icon-192.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "icons/icon-512x512.png",
+            // CORREGIDO: Nombre exacto de tu archivo
+            src: "icons/icon-512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
