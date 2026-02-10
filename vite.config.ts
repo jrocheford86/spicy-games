@@ -30,6 +30,8 @@ export default defineConfig({
         theme_color: "#ff2e63",
         background_color: "#080808",
         display: "standalone",
+        start_url: "/spicy-games/",
+        scope: "/spicy-games/",
         orientation: "portrait",
         icons: [
           {
