@@ -7,6 +7,7 @@ export interface Localized {
   es: string;
 }
 
+// --- TIPOS PARA KAMASUTRA ---
 export interface Position {
   name: Localized;
   image: string;
@@ -22,4 +23,21 @@ export interface TimeOption {
 export interface GameData {
   positions: Position[];
   times: TimeOption[];
+}
+
+// --- TIPOS PARA VERDAD O RETO (TRUTH OR DARE) ---
+export interface TruthDareEntry {
+  text: Localized;
+}
+
+export interface TruthDareMode {
+  id: string;
+  name: Localized;
+  icon: string;
+  truths: TruthDareEntry[];
+  dares: TruthDareEntry[];
+}
+
+export interface TruthOrDareData {
+  modes: TruthDareMode[];
 }

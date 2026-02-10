@@ -1,4 +1,3 @@
-import { useRegisterSW } from "virtual:pwa-register/react";
 import { useState } from "react";
 import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./components/Home/Home";
@@ -6,51 +5,51 @@ import About from "./components/About/About";
 import ToolsHome from "./components/Tools/ToolsHome";
 import Calendar from "./components/Calendar/Calendar";
 import { KamasutraGame } from "./components/Games/Kamasutra/KamasutraGame";
+import { TruthOrDareGame } from "./components/Games/TruthOrDare/TruthOrDareGame"; // Nuevo
 import BottomNav from "./components/Layout/BottomNav";
 import { Modal } from "./components/UI/Modal";
 
-type View = "home" | "tools" | "about" | "game" | "tool-calendar";
+// Actualizamos los tipos de vista
+type View =
+  | "home"
+  | "tools"
+  | "about"
+  | "game-kamasutra"
+  | "game-truth"
+  | "tool-calendar";
 
 function AppContent() {
   const [view, setView] = useState<View>("home");
   const [modal, setModal] = useState({ open: false, title: "", body: "" });
 
-  // Lógica de actualización automática
-  useRegisterSW({
-    onRegistered(r: ServiceWorkerRegistration | undefined) {
-      // Revisa si hay actualizaciones cada hora (opcional)
-      if (r) {
-        setInterval(
-          () => {
-            r.update();
-          },
-          60 * 60 * 1000,
-        );
-      }
-    },
-    onNeedRefresh() {
-      // Si detecta un cambio crítico, recarga la página automáticamente
-      // Esto hará que el usuario vea un "flash" blanco rápido y tenga la versión nueva
-      window.location.reload();
-    },
-  });
+  const openAlert = (t: string, b: string) =>
+    setModal({ open: true, title: t, body: b });
+
   return (
     <main className="app-container">
-      {/* 1. JUEGOS */}
-      {view === "home" && <Home onSelectGame={() => setView("game")} />}
-      {view === "game" && (
+      {/* 1. PILAR JUEGOS */}
+      {view === "home" && <Home onSelectGame={(id) => setView(id as View)} />}
+
+      {view === "game-kamasutra" && (
         <div className="view">
           <KamasutraGame
             onExit={() => setView("home")}
-            onShowAlert={(t, b) => setModal({ open: true, title: t, body: b })}
+            onShowAlert={openAlert}
           />
         </div>
       )}
 
-      {/* 2. HERRAMIENTAS */}
-      {view === "tools" && (
-        <ToolsHome onSelectTool={() => setView("tool-calendar")} />
+      {view === "game-truth" && (
+        <div className="view">
+          <TruthOrDareGame onExit={() => setView("home")} />
+        </div>
       )}
+
+      {/* 2. PILAR HERRAMIENTAS */}
+      {view === "tools" && (
+        <ToolsHome onSelectTool={(id) => setView(`tool-${id}` as View)} />
+      )}
+
       {view === "tool-calendar" && (
         <div className="view">
           <button onClick={() => setView("tools")} className="back-btn">
@@ -60,11 +59,11 @@ function AppContent() {
         </div>
       )}
 
-      {/* 3. ACERCA DE */}
+      {/* 3. PILAR ACERCA DE */}
       {view === "about" && <About />}
 
-      {/* NAVEGACIÓN INFERIOR (Oculta en juegos y herramientas abiertas) */}
-      {!["game", "tool-calendar"].includes(view) && (
+      {/* NAVEGACIÓN INFERIOR (Se oculta dentro de cualquier juego o herramienta específica) */}
+      {!view.includes("game-") && !view.includes("tool-") && (
         <BottomNav currentView={view} setView={setView} />
       )}
 

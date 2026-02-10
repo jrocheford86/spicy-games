@@ -1,3 +1,10 @@
+.grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  padding-bottom: 40px; /* Espacio extra al final para el scroll */
+}
+
 .header {
   padding: 50px 0 30px;
   text-align: left;

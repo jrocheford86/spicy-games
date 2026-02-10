@@ -13,11 +13,13 @@ const Home = ({ onSelectGame }: HomeProps) => {
       title: "Spicy<span>Games</span>",
       subtitle: "Select your adventure",
       kamasutra: "Kamasutra Roulette",
+      truthOrDare: "Truth or Dare",
     },
     es: {
       title: "Juegos<span>Picantes</span>",
       subtitle: "Selecciona tu aventura",
       kamasutra: "Ruleta Kamasutra",
+      truthOrDare: "Verdad o Reto",
     },
   }[lang as "en" | "es"];
 
@@ -29,12 +31,26 @@ const Home = ({ onSelectGame }: HomeProps) => {
       </header>
 
       <div className={styles.grid}>
-        <div className={styles.card} onClick={() => onSelectGame("kamasutra")}>
+        {/* JUEGO 1: KAMASUTRA */}
+        <div
+          className={styles.card}
+          onClick={() => onSelectGame("game-kamasutra")}
+        >
           <span className={styles.cardIcon}>🔥</span>
           <div className={styles.cardText}>
             <h3>{t.kamasutra}</h3>
           </div>
         </div>
+
+        {/* JUEGO 2: VERDAD O RETO */}
+        <div className={styles.card} onClick={() => onSelectGame("game-truth")}>
+          <span className={styles.cardIcon}>🃏</span>
+          <div className={styles.cardText}>
+            <h3>{t.truthOrDare}</h3>
+          </div>
+        </div>
+
+        {/* PROXIMAMENTE: Aquí puedes añadir más tarjetas en el futuro */}
       </div>
     </div>
   );
