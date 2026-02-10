@@ -19,7 +19,7 @@ export default defineConfig({
       },
 
       includeAssets: [
-        "favicon.ico",
+        "favicon.png",
         "apple-touch-icon.png",
         "icons/*.png",
         "games/**/*.jpg",
@@ -36,17 +36,13 @@ export default defineConfig({
             src: "icons/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any maskable",
           },
           {
             src: "icons/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
-          },
-          {
-            src: "icons/icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "maskable",
+            purpose: "any maskable",
           },
         ],
       },
