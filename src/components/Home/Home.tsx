@@ -25,16 +25,19 @@ const Home = ({ onSelectGame }: HomeProps) => {
   return (
     <div className="view">
       <header className={styles.header}>
-        <div className={styles.brandContainer}>
-          <img
-            src={`${import.meta.env.BASE_URL}icons/icon-500.png`}
-            alt="Spicy Games Logo"
-            className={styles.pulsatingLogo} // Cambiamos el nombre de la clase
-          />
-          <h1 className={styles.brandName}>
-            Spicy<span>Games</span>
-          </h1>
-        </div>
+        {/* El logo arriba */}
+        <img
+          src={`${import.meta.env.BASE_URL}icons/icon-500.png`}
+          alt="Logo"
+          className={styles.pulsatingLogo}
+        />
+
+        {/* El nombre justo debajo con mínimo espacio */}
+        <h1 className={styles.brandName}>
+          Spicy<span>Games</span>
+        </h1>
+
+        {/* El subtítulo pegado al nombre */}
         <p className={styles.subtitle}>{t.subtitle}</p>
       </header>
 
