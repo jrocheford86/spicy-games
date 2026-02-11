@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   color: white;
+  overflow: hidden;
 }
 
 .gameHeader {
@@ -11,6 +12,7 @@
   align-items: center;
   gap: 20px;
   padding: 20px 0;
+  flex-shrink: 0;
 }
 
 .closeBtn {
@@ -22,17 +24,20 @@
   border-radius: 50%;
   font-size: 1.2rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Selección de Modo */
+/* --- PANTALLA 1: SELECCIÓN DE MODO --- */
 .modeGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-  padding-top: 20px;
+  padding-top: 10px;
+  overflow-y: auto;
 }
 
-/* Corregido: Color gris claro para la instrucción superior */
 .label {
   grid-column: 1 / -1;
   color: #bbb;
@@ -53,21 +58,21 @@
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   transition:
-    transform 0.2s,
-    background 0.2s;
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s ease;
 }
 
 .modeBtn:active {
-  transform: scale(0.95);
-  background: #252528;
+  transform: scale(0.95) translateY(2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .modeIcon {
   font-size: 2.2rem;
 }
 
-/* Corregido: Texto en blanco puro para los nombres de los modos */
 .modeName {
   font-weight: 700;
   font-size: 1rem;
@@ -75,50 +80,79 @@
   letter-spacing: 0.5px;
 }
 
-/* Corregido: Estilo especial para el modo Mix */
 .mixBtn {
   border-color: var(--primary);
-  background: rgba(255, 46, 99, 0.1);
+  background: rgba(255, 46, 99, 0.05);
+  box-shadow: 0 8px 16px rgba(255, 46, 99, 0.1);
 }
 
 .mixBtn .modeName {
-  color: var(--primary); /* Texto rosa para destacar el modo combinado */
+  color: var(--primary);
 }
 
-/* Elección (Verdad o Reto) */
-.choiceMenu {
+/* --- PANTALLA 2: ESCENA 3D (Giro de Carta) --- */
+.gameScene {
   flex: 1;
+  perspective: 1200px;
+  margin: 10px 0 20px 0;
+  min-height: 0; /* Permite que el contenedor respete el flexbox */
+}
+
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.isFlipped {
+  transform: rotateY(180deg);
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 35px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 30px;
-  position: relative;
+  background: #1c1c1e;
+  border: 1px solid #333;
+  box-sizing: border-box;
 }
 
-/* Corregido: Título del modo seleccionado en blanco/rosa */
+/* Cara Frontal (Elegir Verdad o Reto) */
+.cardFront {
+  padding: 40px 25px;
+  justify-content: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
 .modeTitle {
   font-size: 1.7rem;
   font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 5px;
+  color: #fff;
+  margin-bottom: 40px;
   text-align: center;
 }
 
 .btnGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 20px;
   width: 100%;
 }
 
 .truthBtn,
 .dareBtn {
-  padding: 50px 20px;
+  padding: 45px 20px;
   border-radius: 25px;
   border: none;
   font-weight: 900;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: white;
   cursor: pointer;
   transition: transform 0.2s;
@@ -126,12 +160,12 @@
 
 .truthBtn {
   background: #007aff;
-  box-shadow: 0 10px 25px rgba(0, 122, 255, 0.25);
+  box-shadow: 0 10px 20px rgba(0, 122, 255, 0.25);
 }
 
 .dareBtn {
   background: #ff2e63;
-  box-shadow: 0 10px 25px rgba(255, 46, 99, 0.25);
+  box-shadow: 0 10px 20px rgba(255, 46, 99, 0.25);
 }
 
 .truthBtn:active,
@@ -141,58 +175,87 @@
 
 .backBtnSmall {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 20px;
   background: #222;
   border: none;
   color: #fff;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  font-size: 1.2rem;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 
-/* Pantalla de la Carta de Juego */
-.card {
-  flex: 1;
-  background: #1c1c1e;
-  border-radius: 35px;
-  padding: 40px 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border: 3px solid transparent;
-  animation: slideUp 0.4s ease-out;
+/* --- Cara Trasera (La Pregunta/Reto con Scroll) --- */
+.cardBack {
+  transform: rotateY(180deg);
+  padding: 20px;
+  justify-content: space-between; /* Botón siempre abajo */
 }
 
 .borderTruth {
-  border-color: #007aff;
+  border: 3px solid rgba(0, 122, 255, 0.6);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(0, 122, 255, 0.2);
 }
 
 .borderDare {
-  border-color: #ff2e63;
+  border: 3px solid rgba(255, 46, 99, 0.6);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(255, 46, 99, 0.2);
 }
 
 .cardTag {
   font-weight: 900;
-  opacity: 0.15;
-  font-size: 2rem;
+  opacity: 0.1;
+  font-size: 2.2rem;
   position: absolute;
-  top: 40px;
+  top: 35px;
   color: white;
+  letter-spacing: 4px;
+  pointer-events: none;
+}
+
+/* Contenedor con Scroll para textos largos */
+.textContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow-y: auto;
+  margin-top: 60px; /* Evita que el texto tape el CardTag */
+  padding: 10px 5px;
+  /* Efecto de desvanecido arriba y abajo */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
 }
 
 .cardText {
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   font-weight: 700;
   line-height: 1.35;
-  color: #ffffff; /* Blanco puro para la pregunta/reto */
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .nextBtn {
@@ -200,36 +263,46 @@
   color: black;
   border: none;
   width: 100%;
-  padding: 20px;
+  padding: 18px;
   border-radius: 22px;
   font-weight: 800;
   font-size: 1.1rem;
-  margin-top: 45px;
+  margin-top: 15px;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0; /* Evita que el botón se aplaste */
 }
 
 .nextBtn:active {
-  background: #ddd;
+  transform: scale(0.98);
+  background: #eee;
 }
 
-/* Animaciones */
+/* --- AJUSTES PARA PANTALLAS PEQUEÑAS (Media Queries) --- */
+@media (max-height: 670px) {
+  .cardText {
+    font-size: 1.45rem;
+  }
+  .modeTitle {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+  .truthBtn,
+  .dareBtn {
+    padding: 35px 20px;
+  }
+  .cardTag {
+    font-size: 1.8rem;
+    top: 25px;
+  }
+}
+
+/* --- ANIMACIONES --- */
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
     opacity: 1;
   }
 }

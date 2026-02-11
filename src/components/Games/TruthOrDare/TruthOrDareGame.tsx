@@ -19,17 +19,19 @@ export const TruthOrDareGame: React.FC<Props> = ({ onExit }) => {
   const [selectedMode, setSelectedMode] = useState<
     TruthDareMode | "mix" | null
   >(null);
+
+  // Estados para la animación de volteo
+  const [isFlipped, setIsFlipped] = useState(false);
   const [currentCard, setCurrentCard] = useState<TruthDareEntry | null>(null);
   const [cardType, setCardType] = useState<"truth" | "dare" | null>(null);
 
-  // Lógica para el modo MIX (Combina todo)
   const mixedData = useMemo(() => {
     const allTruths = data.modes.flatMap((m) => m.truths);
     const allDares = data.modes.flatMap((m) => m.dares);
     return { truths: allTruths, dares: allDares };
   }, []);
 
-  const handleGetRandom = (type: "truth" | "dare") => {
+  const handleChoice = (type: "truth" | "dare") => {
     const source = selectedMode === "mix" ? mixedData : selectedMode;
     if (!source) return;
 
@@ -38,12 +40,17 @@ export const TruthOrDareGame: React.FC<Props> = ({ onExit }) => {
 
     setCurrentCard(random);
     setCardType(type);
+    setIsFlipped(true); // Activa el volteo hacia la pregunta
     if (navigator.vibrate) navigator.vibrate(40);
   };
 
-  const resetGame = () => {
-    setCurrentCard(null);
-    setCardType(null);
+  const handleNext = () => {
+    setIsFlipped(false); // Voltea de regreso a los botones
+    // Limpiamos la carta después de que termine la animación de regreso
+    setTimeout(() => {
+      setCurrentCard(null);
+      setCardType(null);
+    }, 600);
   };
 
   return (
@@ -55,8 +62,7 @@ export const TruthOrDareGame: React.FC<Props> = ({ onExit }) => {
         <span>{lang === "es" ? "Verdad o Reto" : "Truth or Dare"}</span>
       </header>
 
-      {/* PASO 1: SELECCIONAR MODO */}
-      {!selectedMode && (
+      {!selectedMode ? (
         <div className={styles.modeGrid}>
           <p className={styles.label}>
             {lang === "es" ? "Selecciona un modo:" : "Select a mode:"}
@@ -83,53 +89,58 @@ export const TruthOrDareGame: React.FC<Props> = ({ onExit }) => {
             </span>
           </button>
         </div>
-      )}
-
-      {/* PASO 2: ELEGIR VERDAD O RETO */}
-      {selectedMode && !currentCard && (
-        <div className={styles.choiceMenu}>
-          <button
-            className={styles.backBtnSmall}
-            onClick={() => setSelectedMode(null)}
+      ) : (
+        <div className={styles.gameScene}>
+          <div
+            className={`${styles.cardInner} ${isFlipped ? styles.isFlipped : ""}`}
           >
-            ←
-          </button>
-          <div className={styles.modeTitle}>
-            {selectedMode === "mix"
-              ? lang === "es"
-                ? "Modo Combinado"
-                : "Mixed Mode"
-              : selectedMode.name[lang as "en" | "es"]}
-          </div>
-          <div className={styles.btnGrid}>
-            <button
-              className={styles.truthBtn}
-              onClick={() => handleGetRandom("truth")}
-            >
-              {lang === "es" ? "VERDAD" : "TRUTH"}
-            </button>
-            <button
-              className={styles.dareBtn}
-              onClick={() => handleGetRandom("dare")}
-            >
-              {lang === "es" ? "RETO" : "DARE"}
-            </button>
-          </div>
-        </div>
-      )}
+            <div className={styles.cardFront}>
+              <button
+                className={styles.backBtnSmall}
+                onClick={() => setSelectedMode(null)}
+              >
+                ←
+              </button>
+              <div className={styles.modeTitle}>
+                {selectedMode === "mix"
+                  ? lang === "es"
+                    ? "Combinado"
+                    : "Mixed"
+                  : selectedMode.name[lang as "en" | "es"]}
+              </div>
+              <div className={styles.btnGrid}>
+                <button
+                  className={styles.truthBtn}
+                  onClick={() => handleChoice("truth")}
+                >
+                  {lang === "es" ? "VERDAD" : "TRUTH"}
+                </button>
+                <button
+                  className={styles.dareBtn}
+                  onClick={() => handleChoice("dare")}
+                >
+                  {lang === "es" ? "RETO" : "DARE"}
+                </button>
+              </div>
+            </div>
 
-      {/* PASO 3: MOSTRAR CARTA */}
-      {currentCard && (
-        <div
-          className={`${styles.card} ${cardType === "truth" ? styles.borderTruth : styles.borderDare}`}
-        >
-          <div className={styles.cardTag}>{cardType?.toUpperCase()}</div>
-          <p className={styles.cardText}>
-            {currentCard.text[lang as "en" | "es"]}
-          </p>
-          <button className={styles.nextBtn} onClick={resetGame}>
-            {lang === "es" ? "OTRA VEZ" : "NEXT"}
-          </button>
+            <div
+              className={`${styles.cardBack} ${cardType === "truth" ? styles.borderTruth : styles.borderDare}`}
+            >
+              <div className={styles.cardTag}>{cardType?.toUpperCase()}</div>
+
+              {/* NUEVO CONTENEDOR DE TEXTO CON SCROLL */}
+              <div className={styles.textContainer}>
+                <p className={styles.cardText}>
+                  {currentCard?.text[lang as "en" | "es"]}
+                </p>
+              </div>
+
+              <button className={styles.nextBtn} onClick={handleNext}>
+                {lang === "es" ? "CONTINUAR" : "NEXT"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

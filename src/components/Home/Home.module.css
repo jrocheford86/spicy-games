@@ -56,18 +56,39 @@
   gap: 20px;
   border: 1px solid #2c2c2e;
   cursor: pointer;
+
+  /* --- EFECTO DE FLOTACIÓN (Sombras) --- */
+  /* Sombra 1: Profundidad oscura para separar del fondo */
+  /* Sombra 2: Un resplandor muy tenue del color primario para dar vida */
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(255, 46, 99, 0.08);
+
+  /* Transición suave para cuando el usuario toca la tarjeta */
   transition:
     transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s ease,
     background 0.2s ease;
 }
 
+/* --- EFECTO AL TOCAR (Pulsar) --- */
 .card:active {
-  transform: scale(0.96);
+  /* La tarjeta baja (se acerca al fondo) */
+  transform: scale(0.96) translateY(2px);
+
+  /* La sombra se hace más pequeña y densa porque el objeto está "más cerca" del suelo */
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    0 2px 4px rgba(255, 46, 99, 0.05);
+
   background: #252528;
+  border-color: #3a3a3c;
 }
 
 .cardIcon {
   font-size: 2.4rem;
+  /* Añade un brillo que combine con la sombra de la tarjeta */
+  filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.1));
 }
 
 .cardText h3 {
