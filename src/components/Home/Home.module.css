@@ -1,71 +1,129 @@
-.grid {
-  display: grid;
-  gap: 16px;
-  margin-top: 20px;
-  padding-bottom: 40px; /* Espacio extra al final para el scroll */
-}
-
 .header {
   padding: 50px 0 30px;
-  text-align: left;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.8s ease-out;
 }
 
-.header h1 {
-  font-size: 2.6rem;
+.brandContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+/* El Logo con efecto de latido real */
+.pulsatingLogo {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+  /* Resplandor suave para resaltar sobre el fondo negro */
+  filter: drop-shadow(0 0 15px rgba(255, 46, 99, 0.35));
+  /* Animación de latido (2 segundos para que sea más tranquilo en Home) */
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Nombre de la marca fijo */
+.brandName {
+  font-size: 2.4rem;
   margin: 0;
   font-weight: 900;
   letter-spacing: -1.5px;
+  color: #ffffff;
   line-height: 1;
 }
 
-.header h1 span {
-  color: #ff2e63;
+.brandName span {
+  color: #ff2e63; /* Tu color primario */
 }
 
+/* Subtítulo dinámico */
 .subtitle {
   color: #777;
-  font-size: 1.1rem;
-  margin: 12px 0 0 0;
+  font-size: 1rem;
+  margin: 15px 0 0 0;
   font-weight: 400;
-  letter-spacing: 0.3px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
+/* Contenedor de la lista de juegos */
 .grid {
   display: grid;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 18px;
+  margin-top: 25px;
+  padding-bottom: 50px; /* Espacio para el BottomNav */
+  width: 100%;
 }
 
+/* Estilo de las tarjetas de juego */
 .card {
   background: #1c1c1e;
   padding: 28px;
-  border-radius: 30px;
+  border-radius: 32px;
   display: flex;
   align-items: center;
   gap: 22px;
   border: 1px solid #2c2c2e;
   cursor: pointer;
   transition:
-    transform 0.2s ease,
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     background 0.2s ease;
 }
 
-/* Efecto visual al tocar la tarjeta en el móvil */
+/* Feedback visual al tocar en móvil */
 .card:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
   background: #252528;
+  border-color: #3a3a3c;
 }
 
 .cardIcon {
   font-size: 2.8rem;
-  /* Un pequeño resplandor al icono lo hace ver vivo */
-  filter: drop-shadow(0 0 8px rgba(255, 46, 99, 0.2));
 }
 
 .cardText h3 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #fff;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
+}
+
+/* ANIMACIONES */
+
+/* Latido realista: doble pulso seguido de calma */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.06);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  40% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

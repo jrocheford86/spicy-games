@@ -3,20 +3,52 @@
   text-align: center;
   background: #080808;
 }
-.heartIcon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 0 10px rgba(255, 46, 99, 0.5));
+
+.logoWrapper {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.pulsatingLogo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255, 46, 99, 0.4));
+  animation: heartbeatAbout 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeatAbout {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.1);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.15);
+  }
+  40% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .storySection h2 {
   color: var(--primary);
-  font-size: 1.4rem;
-  margin-bottom: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: 800;
 }
+
 .storySection p {
   color: #ccc;
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 1rem;
   text-align: justify;
   padding: 0 15px;
@@ -32,57 +64,64 @@
   color: #666;
   text-transform: uppercase;
   font-size: 0.8rem;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
+
 .name {
-  font-size: 1.8rem;
-  margin: 10px 0 20px 0;
+  font-size: 2rem;
+  margin: 10px 0 25px 0;
   color: #fff;
   font-weight: 900;
 }
 
-/* Iconos Sociales Pequeños y en línea */
+/* ESTILOS DE REDES SOCIALES (Asegúrate de que estén aquí) */
 .socialBox p {
   color: #555;
   font-size: 0.9rem;
   margin-bottom: 15px;
 }
+
 .iconGrid {
   display: flex;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 10px;
 }
 
 .socialIcon {
-  color: #fff;
+  color: #ffffff; /* Asegura que el icono sea blanco */
   background: #1c1c1e;
-  padding: 10px;
+  padding: 12px;
   border-radius: 50%;
   border: 1px solid #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .socialIcon svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  display: block;
 }
+
 .socialIcon:hover {
   border-color: var(--primary);
   color: var(--primary);
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(255, 46, 99, 0.2);
 }
 
-/* Botones de Idioma */
+/* Ajustes de Idioma */
 .settingsLabel {
   color: #666;
   text-transform: uppercase;
   font-size: 0.8rem;
   margin-bottom: 15px;
-  letter-spacing: 1px;
 }
+
 .langButtons {
   display: flex;
   gap: 10px;
@@ -100,8 +139,15 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .langBtn.active {
   border-color: var(--primary);
   color: var(--primary);
   background: rgba(255, 46, 99, 0.1);
+}
+
+.version {
+  margin-top: 40px;
+  font-size: 0.7rem;
+  color: #333;
 }

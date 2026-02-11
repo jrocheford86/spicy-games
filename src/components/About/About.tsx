@@ -4,31 +4,40 @@ import styles from "./About.module.css";
 const About = () => {
   const { lang, setLang } = useLang();
 
-  const t = {
+  const translations = {
     en: {
       story_title: "The Heart behind the App",
       story_body:
-        "Spicy Games was born as a special gift for my wife, created with the intention of keeping the spark alive through play. This app is dedicated to all couples who want to bring back the fun to their intimate moments.",
+        "Spicy Games was born as a special gift for my wife, created with the intention of keeping the spark alive through play. This app is dedicated to all couples who want to bring back the fun to their intimate moments. Because we believe that intimacy should be a space for laughter, discovery, and connection.",
       created_by: "Created by",
+      connect: "Connect with me",
       name: "J. Rocheford",
       prefs: "Preferences",
-      connect: "Connect with me",
     },
     es: {
       story_title: "El corazón detrás de la App",
       story_body:
-        "Spicy Games nació como un regalo especial para mi esposa, creado con la intención de mantener viva la chispa a través del juego. Esta aplicación está dedicada a todas las parejas que desean devolverle la diversión a sus momentos íntimos.",
+        "Spicy Games nació como un regalo especial para mi esposa, creado con la intención de mantener viva la chispa a través del juego. Esta aplicación está dedicada a todas las parejas que desean devolverle la diversión a sus momentos íntimos. Porque creemos que la intimidad debe ser un espacio para reír, descubrir y conectar.",
       created_by: "Creado por",
+      connect: "Conecta conmigo",
       name: "J. Rocheford",
       prefs: "Preferencias",
-      connect: "Conecta conmigo",
     },
-  }[lang as "en" | "es"];
+  };
+
+  const t = translations[lang as "en" | "es"];
 
   return (
     <div className="view">
       <div className={styles.aboutContainer}>
-        <div className={styles.heartIcon}>❤️</div>
+        {/* Logo palpitante (protagonista en About) */}
+        <div className={styles.logoWrapper}>
+          <img
+            src={`${import.meta.env.BASE_URL}icons/icon-500.png`}
+            alt="Spicy Games Logo"
+            className={styles.pulsatingLogo}
+          />
+        </div>
 
         <section className={styles.storySection}>
           <h2>{t.story_title}</h2>
@@ -41,6 +50,7 @@ const About = () => {
           <span className={styles.label}>{t.created_by}</span>
           <h3 className={styles.name}>{t.name}</h3>
 
+          {/* BLOQUE DE REDES SOCIALES (Asegúrate de que este bloque esté aquí) */}
           <div className={styles.socialBox}>
             <p>{t.connect}</p>
             <div className={styles.iconGrid}>
@@ -48,7 +58,7 @@ const About = () => {
               <a
                 href="https://github.com/jrocheford86"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className={styles.socialIcon}
               >
                 <svg
@@ -64,9 +74,9 @@ const About = () => {
               </a>
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com/in/TU_USUARIO"
+                href="https://linkedin.com/in/jrochefordlouis"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className={styles.socialIcon}
               >
                 <svg
@@ -105,6 +115,8 @@ const About = () => {
             </button>
           </div>
         </section>
+
+        <div className={styles.version}>v1.1.0</div>
       </div>
     </div>
   );

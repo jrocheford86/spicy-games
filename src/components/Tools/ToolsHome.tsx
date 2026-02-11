@@ -1,30 +1,38 @@
 import { useLang } from "../../context/LanguageContext";
-import styles from "../Home/Home.module.css";
+import styles from "../Home/Home.module.css"; // Reutilizamos los estilos de Home
 
-interface Props {
+interface ToolsHomeProps {
   onSelectTool: (id: string) => void;
 }
 
-const ToolsHome = ({ onSelectTool }: Props) => {
+const ToolsHome = ({ onSelectTool }: ToolsHomeProps) => {
   const { lang } = useLang();
 
   const t = {
     en: {
-      title: "<span>Tools</span>",
-      subtitle: "Tracking & More",
-      calendar: "Passion Tracker",
+      subtitle: "Enhance your connection",
+      calendar: "Passion Calendar",
     },
     es: {
-      title: "<span>Herramientas</span>",
-      subtitle: "Registro y más",
-      calendar: "Registro de Pasión",
+      subtitle: "Mejora vuestra conexión",
+      calendar: "Calendario de Pasión",
     },
   }[lang as "en" | "es"];
 
   return (
     <div className="view">
       <header className={styles.header}>
-        <h1 dangerouslySetInnerHTML={{ __html: t.title }} />
+        {/* Mismo contenedor de marca que en Home */}
+        <div className={styles.brandContainer}>
+          <img
+            src={`${import.meta.env.BASE_URL}icons/icon-500.png`}
+            alt="Spicy Games Logo"
+            className={styles.pulsatingLogo}
+          />
+          <h1 className={styles.brandName}>
+            Spicy<span>Games</span>
+          </h1>
+        </div>
         <p className={styles.subtitle}>{t.subtitle}</p>
       </header>
 
@@ -35,6 +43,8 @@ const ToolsHome = ({ onSelectTool }: Props) => {
             <h3>{t.calendar}</h3>
           </div>
         </div>
+
+        {/* Aquí aparecerán las futuras herramientas con el mismo estilo */}
       </div>
     </div>
   );

@@ -8,15 +8,14 @@ interface HomeProps {
 const Home = ({ onSelectGame }: HomeProps) => {
   const { lang } = useLang();
 
+  // Solo traducimos el subtítulo, el nombre se queda fijo
   const t = {
     en: {
-      title: "Spicy<span>Games</span>",
       subtitle: "Select your adventure",
       kamasutra: "Kamasutra Roulette",
       truthOrDare: "Truth or Dare",
     },
     es: {
-      title: "Juegos<span>Picantes</span>",
       subtitle: "Selecciona tu aventura",
       kamasutra: "Ruleta Kamasutra",
       truthOrDare: "Verdad o Reto",
@@ -26,12 +25,20 @@ const Home = ({ onSelectGame }: HomeProps) => {
   return (
     <div className="view">
       <header className={styles.header}>
-        <h1 dangerouslySetInnerHTML={{ __html: t.title }} />
+        <div className={styles.brandContainer}>
+          <img
+            src={`${import.meta.env.BASE_URL}icons/icon-500.png`}
+            alt="Spicy Games Logo"
+            className={styles.pulsatingLogo} // Cambiamos el nombre de la clase
+          />
+          <h1 className={styles.brandName}>
+            Spicy<span>Games</span>
+          </h1>
+        </div>
         <p className={styles.subtitle}>{t.subtitle}</p>
       </header>
 
       <div className={styles.grid}>
-        {/* JUEGO 1: KAMASUTRA */}
         <div
           className={styles.card}
           onClick={() => onSelectGame("game-kamasutra")}
@@ -42,15 +49,12 @@ const Home = ({ onSelectGame }: HomeProps) => {
           </div>
         </div>
 
-        {/* JUEGO 2: VERDAD O RETO */}
         <div className={styles.card} onClick={() => onSelectGame("game-truth")}>
           <span className={styles.cardIcon}>🃏</span>
           <div className={styles.cardText}>
             <h3>{t.truthOrDare}</h3>
           </div>
         </div>
-
-        {/* PROXIMAMENTE: Aquí puedes añadir más tarjetas en el futuro */}
       </div>
     </div>
   );
